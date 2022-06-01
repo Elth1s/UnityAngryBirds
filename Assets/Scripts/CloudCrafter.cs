@@ -32,7 +32,7 @@ public class CloudCrafter : MonoBehaviour
 
             cPos.y = Mathf.Lerp(cloudPosMin.y, cPos.y, scaleU);
 
-            cPos.z = 100 - 90 * scaleU;
+            cPos.z = 100 - 80 * scaleU;
 
             cloud.transform.position = cPos;
             cloud.transform.localScale = Vector3.one * scaleVal;

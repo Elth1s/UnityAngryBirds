@@ -9,6 +9,7 @@ public class Slingshot : MonoBehaviour
     public GameObject prefabProjectile;
     public float velocityMult = 8f;
     public Text uitButton;
+    public LineRenderer line;
 
     [Header("Set Dinamycally")]
     public GameObject launchPoint;
@@ -57,6 +58,8 @@ public class Slingshot : MonoBehaviour
         Vector3 projPos = launchPos + mouseDelta;
         projectile.transform.position = projPos;
 
+        line.SetPosition(1, projPos);
+
         if (Input.GetMouseButtonUp(0))
         {
             aimingMode = false;
@@ -67,6 +70,7 @@ public class Slingshot : MonoBehaviour
             MissionDemolition.ShotFired();
             ProjectileLine.S.poi = projectile;
             uitButton.text = "Show Castle";
+            line.SetPosition(1, new Vector3(-10, -6, 0));
         }
     }
     void OnMouseEnter()

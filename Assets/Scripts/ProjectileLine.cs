@@ -7,16 +7,20 @@ public class ProjectileLine : MonoBehaviour
 
     [Header("Set in Inspector")]
     public float minDist = 0.1f;
+    public List<LineRenderer> lines;
 
-    private LineRenderer line;
+    private int currentLine;
     private GameObject _poi;
     private List<Vector3> points;
 
     void Awake()
     {
         S = this;
-        line = GetComponent<LineRenderer>();
-        line.enabled = false;
+        foreach (var item in lines)
+        {
+            item.enabled = false;
+        }
+        currentLine = 0;
         points = new List<Vector3>();
     }
 
@@ -31,7 +35,11 @@ public class ProjectileLine : MonoBehaviour
             _poi = value;
             if (_poi != null)
             {
-                line.enabled = false;
+                currentLine++;
+                if (currentLine == 3)
+                    currentLine = 0;
+
+                lines[currentLine].enabled = false;
                 points = new List<Vector3>();
                 AddPoint();
             }
@@ -41,7 +49,10 @@ public class ProjectileLine : MonoBehaviour
     public void Clear()
     {
         _poi = null;
-        line.enabled = false;
+        foreach (var item in lines)
+        {
+            item.enabled = false;
+        }
         points = new List<Vector3>();
     }
 
@@ -60,19 +71,19 @@ public class ProjectileLine : MonoBehaviour
             Vector3 launchPosDiff = pt - Slingshot.LAUNCH_POS;
             points.Add(pt + launchPosDiff);
             points.Add(pt);
-            line.positionCount = 2;
+            lines[currentLine].positionCount = 2;
 
-            line.SetPosition(0, points[0]);
-            line.SetPosition(1, points[1]);
+            lines[currentLine].SetPosition(0, points[0]);
+            lines[currentLine].SetPosition(1, points[1]);
 
-            line.enabled = true;
+            lines[currentLine].enabled = true;
         }
         else
         {
             points.Add(pt);
-            line.positionCount = points.Count;
-            line.SetPosition(points.Count - 1, lastPoint);
-            line.enabled = true;
+            lines[currentLine].positionCount = points.Count;
+            lines[currentLine].SetPosition(points.Count - 1, lastPoint);
+            lines[currentLine].enabled = true;
         }
     }
 
